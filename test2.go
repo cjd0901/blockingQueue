@@ -19,11 +19,14 @@ func main() {
 	}()
 
 	for i := 0; i < 10; i++ {
-		if i == 5 {
-			q.Close()
+		//if i == 5 {
+		//	q.Close()
+		//}
+		if i == 1 {
+			q.Add(i)
 		}
 		q.Add(i)
-		time.Sleep(1 * time.Second)
+		// time.Sleep(time.Second)
 	}
 
 	select {
