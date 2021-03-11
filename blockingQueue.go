@@ -47,6 +47,7 @@ func (q *Queue) Add(e *Event) {
 	q.Cond.L.Lock()
 	// 事件去重
 	if _, ok := q.M[e]; ok {
+		q.Cond.L.Unlock()
 		return
 	}
 	// 插入事件
@@ -76,6 +77,9 @@ func (c *Consumer) Pop(q *Queue, handle func(e *Event) error) {
 		// 如果队列为空，执行等待通知操作
 		if len(q.Es) == 0 {
 			q.Cond.Wait()
+		}
+		if len(q.Es) ==0 {
+			continue
 		}
 		// 从队列中取出事件
 		e := q.Es[0]
